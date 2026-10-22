@@ -8,12 +8,6 @@ import { site } from "@/data";
 
 const steps = ["Research.", "Design.", "Build."];
 
-// callouts sit on the photo's left edge and point outward, never at the person: [top%, label]
-const callouts: [number, string][] = [
-  [44, "Thinks in systems"],
-  [80, "Writes the backend"],
-];
-
 // recruiter quick-scan, styled as a drawing title block
 const block: [string, string, string?][] = [
   ["Role", "Backend engineer"],
@@ -36,21 +30,31 @@ export default function Hero() {
         .from(q(".frame-x"), { scaleX: 0, duration: 1.4, ease: "expo.inOut" })
         .from(q(".frame-y"), { scaleY: 0, duration: 1.4, ease: "expo.inOut" }, 0)
         .from(q(".hl"), { yPercent: 110, duration: 1.3, stagger: 0.12 }, 0.35)
-        .fromTo(q(".photo"), { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: 1.6, ease: "expo.inOut" }, 0.4)
-        .fromTo(q(".scan"), { top: "0%" }, { top: "100%", duration: 1.6, ease: "expo.inOut" }, 0.4)
-        .to(q(".scan"), { opacity: 0, duration: 0.3 })
-        .from(q(".dim"), { scale: 0, duration: 1, stagger: 0.1, ease: "expo.inOut" }, 1.2)
-        .from(q(".callout"), { opacity: 0, x: 20, duration: 0.8, stagger: 0.12 }, 1.5)
+        .from(q(".hands"), { xPercent: 60, opacity: 0, duration: 1.8 }, 0.4)
         .from(q(".fade"), { opacity: 0, y: 20, duration: 1, stagger: 0.06 }, 0.9)
         .from(q(".tb-cell"), { opacity: 0, duration: 0.6, stagger: 0.05 }, 1.2)
         // the headline lines only need clipping while they slide in
         .set(q(".hl-mask"), { overflow: "visible" });
 
-      gsap.to(q(".photo-wrap"), {
-        yPercent: -8,
+      gsap.to(q(".hands"), {
+        yPercent: -10,
         ease: "none",
         scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
       });
+
+      // idle sway, and on pointer devices the hands reach toward the cursor
+      const reach = q(".reach")[0];
+      gsap.to(reach, { rotation: -2, scale: 1.03, duration: 3.2, ease: "sine.inOut", yoyo: true, repeat: -1, transformOrigin: "100% 50%" });
+      if (!window.matchMedia("(hover: hover)").matches) return;
+      const rx = gsap.quickTo(reach, "x", { duration: 1.4, ease: "power3.out" });
+      const ry = gsap.quickTo(reach, "y", { duration: 1.4, ease: "power3.out" });
+      const move = (e: PointerEvent) => {
+        const r = reach.parentElement!.getBoundingClientRect();
+        rx(gsap.utils.clamp(-50, 30, (e.clientX - r.left - r.width / 2) * 0.08));
+        ry(gsap.utils.clamp(-50, 50, (e.clientY - r.top - r.height / 2) * 0.08));
+      };
+      window.addEventListener("pointermove", move);
+      return () => window.removeEventListener("pointermove", move);
     },
     { scope: root },
   );
@@ -106,44 +110,12 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* portrait */}
-          <div className="relative md:col-span-5 md:pl-6">
-            <div className="photo-wrap relative mx-auto mt-6 max-w-[460px] md:mt-10">
-              {/* dimension line, horizontal */}
-              <div className="dim absolute -top-9 inset-x-0 flex items-center gap-2 text-cobalt">
-                <span className="h-3 w-px bg-cobalt" />
-                <span className="h-px flex-1 bg-cobalt" />
-                <span className="label bg-paper px-1 text-[10px]">1 Backend engineer</span>
-                <span className="h-px flex-1 bg-cobalt" />
-                <span className="h-3 w-px bg-cobalt" />
+          {/* hands reaching in from the right edge of the screen */}
+          <div className="relative flex items-center md:col-span-5">
+            <div className="hands -mr-16 mix-blend-multiply ml-auto w-[calc(72%+2rem)] md:-mr-[10rem] md:w-[calc(85%+5.5rem)]">
+              <div className="reach">
+                <Image src="/hands.jpg" alt="" width={576} height={660} priority sizes="(min-width: 768px) 50vw, 90vw" className="h-auto w-full" />
               </div>
-              {/* dimension line, vertical */}
-              <div className="dim absolute -right-8 inset-y-0 hidden flex-col items-center gap-2 text-cobalt sm:flex">
-                <span className="h-px w-3 bg-cobalt" />
-                <span className="w-px flex-1 bg-cobalt" />
-                <span className="label bg-paper py-1 text-[10px] [writing-mode:vertical-rl]">4× podium</span>
-                <span className="w-px flex-1 bg-cobalt" />
-                <span className="h-px w-3 bg-cobalt" />
-              </div>
-
-              <div className="reg">
-                <div className="photo relative aspect-[4/5] overflow-hidden bg-ice">
-                  <Image src="/portrait.jpg" alt="Lovekesh Anand at Microsoft Noida" fill priority sizes="(min-width: 768px) 40vw, 100vw" className="object-cover object-[50%_20%]" />
-                  <span className="scan absolute inset-x-0 h-0.5 bg-cobalt shadow-[0_0_20px_4px_rgba(31,63,255,0.5)]" />
-                </div>
-              </div>
-
-              {callouts.map(([y, text]) => (
-                <div
-                  key={text}
-                  className="callout absolute left-0 hidden -translate-x-full -translate-y-1/2 flex-row-reverse items-center sm:flex"
-                  style={{ top: `${y}%` }}
-                >
-                  <span className="size-2.5 shrink-0 rounded-full border-2 border-cobalt bg-white" />
-                  <span className="h-px w-8 bg-cobalt" />
-                  <span className="label whitespace-nowrap bg-cobalt px-2 py-1 text-[10px] text-white">{text}</span>
-                </div>
-              ))}
             </div>
           </div>
         </div>
