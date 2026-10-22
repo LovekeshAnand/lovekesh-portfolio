@@ -44,10 +44,10 @@ export default function Contact() {
         </p>
 
         <div data-reveal className="mt-12 flex flex-wrap items-stretch gap-3">
-          <a href={`mailto:${site.email}`} className="bg-white px-6 py-5 text-lg font-extrabold tracking-tight text-print transition-colors hover:bg-ink hover:text-white md:text-2xl">
+          <a href={`mailto:${site.email}`} className="w-full bg-white px-6 py-5 text-center text-lg font-extrabold sm:w-auto sm:text-left tracking-tight text-print transition-colors hover:bg-ink hover:text-white md:text-2xl">
             {site.email} ↗
           </a>
-          <button type="button" onClick={copy} className="label border border-white/60 px-6 transition-colors hover:bg-white hover:text-print">
+          <button type="button" onClick={copy} className="label w-full border border-white/60 px-6 py-4 transition-colors sm:w-auto sm:py-0 hover:bg-white hover:text-print">
             {copied ? "Copied ✓" : "Copy"}
           </button>
         </div>

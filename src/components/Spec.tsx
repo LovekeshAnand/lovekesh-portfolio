@@ -25,15 +25,18 @@ export default function Spec() {
               <tr className="border-y border-cobalt/40">
                 <th className="w-14 py-3 font-normal">Item</th>
                 <th className="py-3 font-normal">Component</th>
-                <th className="py-3 font-normal">Parts</th>
+                <th className="hidden py-3 font-normal md:table-cell">Parts</th>
               </tr>
             </thead>
             <tbody>
               {bom.map((b, i) => (
                 <tr key={b.item} data-reveal={i * 0.05} className="border-b border-cobalt/20 align-top">
                   <td className="label py-5 text-[10px] text-slate">0{i + 1}</td>
-                  <td className={`py-5 pr-4 text-xl font-extrabold tracking-tight md:text-2xl ${i === 0 ? "text-cobalt" : ""}`}>{b.item}</td>
-                  <td className="py-5 text-slate md:pt-6">{b.parts}</td>
+                  <td className={`py-5 pr-4 text-xl font-extrabold tracking-tight md:text-2xl ${i === 0 ? "text-cobalt" : ""}`}>
+                    {b.item}
+                    <span className="mt-1 block text-sm font-normal tracking-normal text-slate md:hidden">{b.parts}</span>
+                  </td>
+                  <td className="hidden py-5 text-slate md:table-cell md:pt-6">{b.parts}</td>
                 </tr>
               ))}
             </tbody>

@@ -39,19 +39,22 @@ export default function Method() {
         </h2>
       </div>
 
-      <div className="pipe relative mt-20 md:mt-28">
+      <div className="pipe relative mt-14 md:mt-28">
         {/* the pipe the work flows through */}
         <div className="absolute left-0 right-0 top-8 hidden h-0.5 bg-cobalt/15 md:block">
           <div className="pipe-fill h-full origin-left bg-cobalt" />
         </div>
-        <ol className="relative grid gap-4 md:grid-cols-4 md:gap-6">
+        <span aria-hidden className="absolute bottom-8 left-6 top-6 w-px bg-cobalt/20 md:hidden" />
+        <ol className="relative grid gap-8 md:grid-cols-4 md:gap-6">
           {stages.map(([name, text], i) => (
-            <li key={name} className="relative">
-              <span className="stage label relative z-10 flex size-16 items-center justify-center border border-cobalt/40 bg-paper text-sm text-cobalt">
+            <li key={name} className="relative flex items-start gap-5 md:block">
+              <span className="stage label relative z-10 flex size-12 shrink-0 items-center md:size-16 justify-center border border-cobalt/40 bg-paper text-sm text-cobalt">
                 0{i + 1}
               </span>
-              <h3 className="mt-6 text-4xl font-extrabold tracking-[-0.04em] md:text-5xl">{name}</h3>
-              <p className="mt-3 max-w-xs text-slate">{text}</p>
+              <div>
+                <h3 className="text-3xl font-extrabold tracking-[-0.04em] md:mt-6 md:text-5xl">{name}</h3>
+                <p className="mt-1 max-w-xs text-slate md:mt-3">{text}</p>
+              </div>
             </li>
           ))}
         </ol>

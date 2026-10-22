@@ -108,7 +108,7 @@ export default function Hero() {
 
           {/* portrait */}
           <div className="relative md:col-span-5 md:pl-6">
-            <div className="photo-wrap relative mx-auto max-w-[460px] md:mt-10">
+            <div className="photo-wrap relative mx-auto mt-6 max-w-[460px] md:mt-10">
               {/* dimension line, horizontal */}
               <div className="dim absolute -top-9 inset-x-0 flex items-center gap-2 text-cobalt">
                 <span className="h-3 w-px bg-cobalt" />

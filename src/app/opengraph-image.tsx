@@ -1,16 +1,27 @@
 import { ImageResponse } from "next/og";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { font, ogAssets } from "./_og/assets";
 
 export const alt = "Lovekesh Anand, Backend Engineer. Research. Design. Build.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// the share card is a mini version of the hero sheet
+const PRINT = "#1b33b8";
+const ICE = "#b9c8ff";
+const line = "rgba(255,255,255,0.55)";
+
+const mono = { fontFamily: "JetBrains Mono", fontSize: 15, letterSpacing: 3, textTransform: "uppercase" as const };
+
+const block: [string, string][] = [
+  ["Role", "Backend engineer"],
+  ["Core", "Node · FastAPI · SQL"],
+  ["Record", "1st @ Microsoft"],
+  ["Class", "B.Tech CSE '27"],
+];
+
+// the share card is a cyanotype print of the hero sheet
 export default async function Image() {
-  const portrait = await readFile(join(process.cwd(), "public/portrait.jpg"));
-  const src = `data:image/jpeg;base64,${portrait.toString("base64")}`;
-  const grid = "rgba(31,63,255,0.10)";
+  const { portrait, extraBold, regular, mono: monoFont } = await ogAssets();
+  const src = `data:image/jpeg;base64,${portrait}`;
 
   return new ImageResponse(
     (
@@ -19,28 +30,85 @@ export default async function Image() {
           width: "100%",
           height: "100%",
           display: "flex",
-          background: "#f7f8fb",
-          backgroundImage: `linear-gradient(${grid} 1px, transparent 1px), linear-gradient(90deg, ${grid} 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
-          padding: 48,
-          color: "#0b1130",
+          padding: 28,
+          color: "white",
+          fontFamily: "Manrope",
+          background: PRINT,
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.10) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
         }}
       >
-        <div style={{ display: "flex", flex: 1, border: "2px solid #1f3fff", padding: 48 }}>
-          <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", flex: 1 }}>
-            <div style={{ fontSize: 22, letterSpacing: 4, color: "#1f3fff" }}>LOVEKESH ANAND / BACKEND ENGINEER</div>
-            <div style={{ display: "flex", flexDirection: "column", fontSize: 112, fontWeight: 800, lineHeight: 0.95, letterSpacing: -5 }}>
-              <span>Research.</span>
-              <span>Design.</span>
-              <span style={{ color: "#1f3fff" }}>Build.</span>
+        {/* drawing frame */}
+        <div style={{ display: "flex", flexDirection: "column", flex: 1, border: `2px solid ${line}` }}>
+          <div style={{ display: "flex", flex: 1, padding: "36px 44px 0" }}>
+            {/* statement */}
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <div style={{ ...mono, color: ICE }}>Sheet 01 — Lovekesh Anand</div>
+              <div style={{ display: "flex", flexDirection: "column", marginTop: 26, fontSize: 104, fontWeight: 800, lineHeight: 0.92, letterSpacing: -5 }}>
+                <span>Research.</span>
+                <span>Design.</span>
+                <span style={{ color: ICE }}>Build.</span>
+              </div>
+              <div style={{ marginTop: 26, fontSize: 26, color: "rgba(255,255,255,0.85)" }}>
+                Backend engineer. Lately: AI infrastructure.
+              </div>
             </div>
-            <div style={{ fontSize: 24, color: "#586080" }}>1st @ Automate India (Microsoft) · 4 podiums · Open to hire</div>
+
+            {/* portrait with registration marks, a callout and a stamp */}
+            <div style={{ display: "flex", position: "relative", width: 300, height: 360, marginTop: 8 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={src} width={300} height={360} style={{ objectFit: "cover", objectPosition: "50% 20%", border: "2px solid white" }} alt="" />
+              <div style={{ position: "absolute", top: -12, left: -12, width: 26, height: 26, borderTop: "3px solid white", borderLeft: "3px solid white" }} />
+              <div style={{ position: "absolute", bottom: -12, right: -12, width: 26, height: 26, borderBottom: "3px solid white", borderRight: "3px solid white" }} />
+              <div style={{ position: "absolute", top: 150, left: -150, display: "flex", alignItems: "center" }}>
+                <div style={{ ...mono, fontSize: 12, background: "white", color: PRINT, padding: "6px 10px" }}>Thinks in systems</div>
+                <div style={{ width: 30, height: 2, background: "white" }} />
+                <div style={{ width: 12, height: 12, borderRadius: 6, border: "3px solid white", background: PRINT }} />
+              </div>
+              <div
+                style={{
+                  ...mono,
+                  position: "absolute",
+                  bottom: 22,
+                  left: -40,
+                  fontSize: 20,
+                  fontWeight: 500,
+                  padding: "8px 14px",
+                  border: "3px solid white",
+                  boxShadow: "inset 0 0 0 3px rgba(27,51,184,0.85), inset 0 0 0 4px white",
+                  background: "rgba(27,51,184,0.85)",
+                  transform: "rotate(-9deg)",
+                }}
+              >
+                Open to hire
+              </div>
+            </div>
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={src} width={330} height={412} style={{ objectFit: "cover", border: "2px solid #1f3fff", alignSelf: "center" }} alt="" />
+
+          {/* title block */}
+          <div style={{ display: "flex", marginTop: 30, borderTop: `2px solid ${line}` }}>
+            {block.map(([k, v]) => (
+              <div key={k} style={{ display: "flex", flexDirection: "column", flex: 1, padding: "14px 20px", borderRight: `1px solid ${line}` }}>
+                <span style={{ ...mono, fontSize: 11, color: ICE }}>{k}</span>
+                <span style={{ marginTop: 4, fontSize: 17, fontWeight: 800, whiteSpace: "nowrap" }}>{v}</span>
+              </div>
+            ))}
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "14px 20px", background: "white", color: PRINT }}>
+              <span style={{ ...mono, fontSize: 11 }}>View sheets</span>
+              <span style={{ marginTop: 4, fontSize: 20, fontWeight: 800 }}>lovekesh-builds.vercel.app</span>
+            </div>
+          </div>
         </div>
       </div>
     ),
-    size,
+    {
+      ...size,
+      fonts: [
+        { name: "Manrope", data: font(extraBold), weight: 800, style: "normal" },
+        { name: "Manrope", data: font(regular), weight: 400, style: "normal" },
+        { name: "JetBrains Mono", data: font(monoFont), weight: 500, style: "normal" },
+      ],
+    },
   );
 }

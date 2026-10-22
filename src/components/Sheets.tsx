@@ -57,9 +57,9 @@ export default function Sheets() {
       {projects.map((p, i) => (
         <article key={p.name} className="sheet border-t border-cobalt/20">
           {/* title strip */}
-          <div className="label flex flex-wrap items-stretch border-b border-cobalt/20 text-[10px]">
+          <div className="label flex items-stretch whitespace-nowrap border-b border-cobalt/20 text-[10px]">
             <span className="border-r border-cobalt/20 bg-ink px-4 py-3 text-white md:px-6">03.{i + 1}</span>
-            <span className="flex-1 border-r border-cobalt/20 px-4 py-3 text-slate md:px-6">{p.kind}</span>
+            <span className="min-w-0 flex-1 truncate border-r border-cobalt/20 px-4 py-3 text-slate md:px-6">{p.kind}</span>
             {p.live && (
               <a href={p.live} target="_blank" rel="noreferrer" className="border-r border-cobalt/20 px-4 py-3 text-cobalt transition-colors hover:bg-cobalt hover:text-white md:px-6">
                 Live ↗
@@ -75,6 +75,7 @@ export default function Sheets() {
             <figure className={`grid-paper relative flex min-w-0 flex-col border-cobalt/20 p-5 md:col-span-7 md:p-10 ${i % 2 ? "md:order-2 md:border-l" : "md:border-r"}`}>
               <figcaption className="label mb-6 flex justify-between text-[10px] text-slate">
                 <span>Fig. {String.fromCharCode(65 + i)} — Architecture</span>
+                <span className="text-cobalt md:hidden">Swipe →</span>
                 
               </figcaption>
               <div className="-mx-5 my-auto overflow-x-auto px-5 md:mx-0 md:overflow-visible md:px-0">
@@ -85,16 +86,16 @@ export default function Sheets() {
             </figure>
 
             {/* spec */}
-            <div className="relative flex flex-col justify-center px-5 py-12 md:col-span-5 md:px-10 md:py-16">
+            <div className="relative order-first flex flex-col justify-center px-5 pb-8 pt-10 md:order-none md:col-span-5 md:px-10 md:py-16">
               {p.stamp && (
-                <span className="stamp absolute right-5 top-6 rotate-[-8deg] text-[11px] text-cobalt md:right-10 md:top-10">
+                <span className="stamp mb-6 rotate-[-4deg] self-start text-[11px] text-cobalt md:absolute md:right-10 md:top-10 md:mb-0 md:rotate-[-8deg] md:self-auto">
                   {p.stamp}
                 </span>
               )}
               <h3 className="text-[clamp(2.6rem,4.4vw,4.6rem)] font-extrabold leading-[0.95] tracking-[-0.055em]">{p.name}</h3>
               <p className="mt-3 text-xl font-light tracking-tight text-cobalt md:text-2xl">{p.line}</p>
 
-              <dl className="mt-10 space-y-6">
+              <dl className="mt-8 space-y-5 md:mt-10 md:space-y-6">
                 {(
                   [
                     ["Problem", p.problem],
