@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f7f8fb;
+  --color-ice: #e8edff;
+  --color-cobalt: #1f3fff;
+  --color-cyan-ink: #1530c9;
+  --color-print: #1b33b8; /* cyanotype field */
+  --color-ink: #0b1130;
+  --color-slate: #586080;
+
+  --font-sans: var(--font-manrope);
+  --font-mono: var(--font-jetbrains);
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: clip;
+}
+
+/* SplitText line masks: leave room for descenders so big type never clips */
+[data-lines] > div {
+  padding-bottom: 0.24em;
+  margin-bottom: -0.24em;
+}
+
+::selection {
+  background: var(--color-cobalt);
+  color: white;
+}
+
+/* drafting paper: 24px minor grid, 120px major grid */
+.grid-paper {
+  background-color: var(--color-paper);
+  background-image:
+    linear-gradient(rgb(31 63 255 / 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(31 63 255 / 0.09) 1px, transparent 1px),
+    linear-gradient(rgb(31 63 255 / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(31 63 255 / 0.04) 1px, transparent 1px);
+  background-size:
+    120px 120px,
+    120px 120px,
+    24px 24px,
+    24px 24px;
+}
+
+/* the cyanotype print, white lines on blue */
+.grid-print {
+  background-color: var(--color-print);
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.12) 1px, transparent 1px),
+    linear-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size:
+    120px 120px,
+    120px 120px,
+    24px 24px,
+    24px 24px;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* registration marks on a frame's corners */
+.reg {
+  position: relative;
+}
+.reg::before,
+.reg::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--color-cobalt);
+  pointer-events: none;
+}
+.reg::before {
+  top: -9px;
+  left: -9px;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+.reg::after {
+  bottom: -9px;
+  right: -9px;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+/* rubber stamp */
+.stamp {
+  display: inline-block;
+  border: 3px double currentColor;
+  padding: 0.35em 0.7em;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  mix-blend-mode: multiply;
+}
+
+@keyframes flow {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+.flow {
+  stroke-dasharray: 2 8;
+  animation: flow 0.9s linear infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.animate-blink {
+  animation: blink 1s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
